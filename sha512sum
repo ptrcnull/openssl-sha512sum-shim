@@ -28,8 +28,11 @@ ifelse { [ "$1" = "-c" ] } {
 		pipeline { echo "$result" } pipeline { grep -F FAILED } wc -l
 	}
 
-	if { s6-test "${failed}" -gt 0 }
-	echo "sha512sum: WARNING: ${failed} of ${total} computed checksums did NOT match"
+	ifelse { s6-test "${failed}" -gt 0 } {
+		foreground { echo "sha512sum: WARNING: ${failed} of ${total} computed checksums did NOT match" }
+		exit 1
+	}
+	exit 0
 }
 
 pipeline { openssl dgst -sha512 -r $@ } tr "*" " "
