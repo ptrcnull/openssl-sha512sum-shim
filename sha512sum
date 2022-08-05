@@ -1,0 +1,35 @@
+#!/bin/execlineb
+
+elgetpositionals
+
+# TODO(ptrc): how do i do this in s6-test
+ifelse { [ "$1" = "-c" ] } {
+	backtick -E result {
+		forstdin -E sumentry
+
+		backtick -E givensum { pipeline { echo $sumentry } cut -d" " -f1 }
+		backtick -E file { pipeline { echo $sumentry } cut -d" " -f3 }
+
+		backtick -E actualsum { pipeline { openssl dgst -sha512 -r $file } cut -d" " -f1 }
+		# foreground { echo "${actualsum} = ${givensum} ${file}" }
+
+		ifelse { s6-test "${actualsum}" = "${givensum}" } {
+			foreground { fdmove 1 2 echo "${file}: OK" }
+			echo OK
+		}
+		foreground { fdmove 1 2 echo "${file}: FAILED" }
+		echo FAILED
+	}
+
+	backtick -E total {
+		pipeline { echo "$result" } wc -l
+	}
+	backtick -E failed {
+		pipeline { echo "$result" } pipeline { grep -F FAILED } wc -l
+	}
+
+	if { s6-test "${failed}" -gt 0 }
+	echo "sha512sum: WARNING: ${failed} of ${total} computed checksums did NOT match"
+}
+
+pipeline { openssl dgst -sha512 -r $@ } tr "*" " "
