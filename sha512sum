@@ -35,4 +35,6 @@ ifelse { [ "$1" = "-c" ] } {
 	exit 0
 }
 
-pipeline { openssl dgst -sha512 -r $@ } tr "*" " "
+pipeline { openssl dgst -sha512 -r $@ }
+pipeline { tr "*" " " }
+sed "s/  stdin/  -/"
