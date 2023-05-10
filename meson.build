@@ -1,5 +1,5 @@
 project('openssl-sha512sum-shim', 'c',
-  version : '0.1',
+  version : '2.0.0',
   default_options : ['warning_level=3'])
 
 openssl_dep = dependency('openssl', version: '>=3.0')
