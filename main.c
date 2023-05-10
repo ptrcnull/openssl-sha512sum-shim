@@ -96,10 +96,9 @@ int perform_check(char * sums_filename) {
     int failed = 0;
 
     char * line = NULL;
-    ssize_t read;
     size_t len = 0;
 
-    while ((read = getline(&line, &len, sums_file)) != -1) {
+    while (getline(&line, &len, sums_file) != -1) {
         char * sep = strstr(line, "  ");
         if (sep == NULL) {
             fprintf(stderr, "invalid checksum file syntax: %s\n", sums_filename);
