@@ -62,7 +62,7 @@ int do_checksum(char * input_filename, char * output) {
     }
     unsigned int digest_len;
 
-	if (!EVP_DigestFinal_ex(mdctx, digest, &digest_len)) {
+    if (!EVP_DigestFinal_ex(mdctx, digest, &digest_len)) {
         fprintf(stderr, "could not digest\n");
         return 1;
     }
@@ -72,7 +72,7 @@ int do_checksum(char * input_filename, char * output) {
     }
     output[128] = 0;
 
-	EVP_MD_CTX_free(mdctx);
+    EVP_MD_CTX_free(mdctx);
 
     return 0;
 }
