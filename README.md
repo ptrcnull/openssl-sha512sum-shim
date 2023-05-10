@@ -1,6 +1,6 @@
 # openssl-sha512sum-shim
 
-> small execline wrapper for `openssl dgst -sha512` to produce the same output as busybox/gnu sha512sum 
+> small implementation of sha512sum with openssl evp api to produce the same output as busybox/gnu sha512sum 
 
 it can be ~2x faster than busybox sha512sum! (ymmv)
 
