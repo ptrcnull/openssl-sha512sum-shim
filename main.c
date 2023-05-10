@@ -124,7 +124,9 @@ int perform_check(char * sums_filename) {
         }
     }
 
-    printf("sha512sum: WARNING: %d of %d computed checksums did NOT match\n", failed, total);
+    if (failed > 0) {
+        printf("sha512sum: WARNING: %d of %d computed checksums did NOT match\n", failed, total);
+    }
 
     fclose(sums_file);
     return failed > 0;
